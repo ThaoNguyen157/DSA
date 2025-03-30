@@ -26,7 +26,7 @@ bool IsFullArr() {
 
 void PushStackArr(int value) {
     if (IsFullArr()) {
-        cerr << "Error: Stack is full! Cannot push value." << endl;
+        cout << "Error: Stack is full! Cannot push value." << endl;
     } else {
         stackArr[++topArr] = value;
     }
@@ -34,7 +34,7 @@ void PushStackArr(int value) {
 
 int PopStackArr() {
     if (IsEmptyArr()) {
-        cerr << "Error: Stack is empty! Cannot pop value." << endl;
+        cout << "Error: Stack is empty! Cannot pop value." << endl;
         return -1;
     } else {
         return stackArr[topArr--];
@@ -43,7 +43,7 @@ int PopStackArr() {
 
 int PeekStackArr() {
     if (IsEmptyArr()) {
-        cerr << "Error: Stack is empty! Cannot peek value." << endl;
+        cout << "Error: Stack is empty! Cannot peek value." << endl;
         return -1;
     } else {
         return stackArr[topArr];
@@ -74,7 +74,7 @@ bool IsEmptyLinked() {
 void PushStackLinked(int value) {
     Node* newNode = new Node();
     if (!newNode) {
-        cerr << "Error: Memory allocation failed!" << endl;
+        cout << "Error: Memory allocation failed!" << endl;
         return;
     }
     newNode->data = value;
@@ -84,7 +84,7 @@ void PushStackLinked(int value) {
 
 int PopStackLinked() {
     if (IsEmptyLinked()) {
-        cerr << "Error: Stack is empty! Cannot pop value." << endl;
+        cout << "Error: Stack is empty! Cannot pop value." << endl;
         return -1;
     } else {
         Node* temp = topLinked;
@@ -97,7 +97,7 @@ int PopStackLinked() {
 
 int PeekStackLinked() {
     if (IsEmptyLinked()) {
-        cerr << "Error: Stack is empty! Cannot peek value." << endl;
+        cout << "Error: Stack is empty! Cannot peek value." << endl;
         return -1;
     } else {
         return topLinked->data;
@@ -118,7 +118,7 @@ int GetDigit(int num, int digitPos) {
 
 void RadixSort(int arr[], int n) {
     if (n <= 0) {
-        cerr << "Error: Array size must be greater than 0!" << endl;
+        cout << "Error: Array size must be greater than 0!" << endl;
         return;
     }
 
@@ -187,7 +187,7 @@ struct Queue {
 
     Dancer Dequeue() {
         if (q.empty()) {
-            cerr << "Error: Queue is empty! Cannot dequeue." << endl;
+            cout << "Error: Queue is empty! Cannot dequeue." << endl;
             return {"", ""};
         }
         Dancer d = q.front();
@@ -197,7 +197,7 @@ struct Queue {
 
     Dancer Peek() {
         if (q.empty()) {
-            cerr << "Error: Queue is empty! Cannot peek." << endl;
+            cout << "Error: Queue is empty! Cannot peek." << endl;
             return {"", ""};
         }
         return q.front();
@@ -207,9 +207,17 @@ struct Queue {
         return q.size();
     }
 
-    void Clear() {
-        while (!q.empty()) {
-            q.pop();
+    void ShowQueue() {
+        if (IsEmpty()) {
+            cout << "Hang doi trong." << endl;
+            return;
+        }
+
+        queue<Dancer> tempQueue = q;
+        while (!tempQueue.empty()) {
+            Dancer d = tempQueue.front();
+            tempQueue.pop();
+            cout << d.Name << endl;
         }
     }
 };
@@ -237,37 +245,22 @@ void StartDancing(Queue &male, Queue &female) {
     }
 
     if (male.Count() > 0) {
-        printf("Van con %d dien vien nam trong hang cho.\n", male.Count());
+        printf("Van con %d dien vien nam trong hang cho:\n", male.Count());
+        male.ShowQueue();
     }
     if (female.Count() > 0) {
-        printf("Van con %d dien vien nu trong hang cho.\n", female.Count());
-    }
-}
-
-void ShowQueue(Queue &q) {
-    if (q.IsEmpty()) {
-        printf("Hang doi trong.\n");
-        return;
-    }
-
-    queue<Dancer> tempQueue = q.q;
-    while (!tempQueue.empty()) {
-        Dancer d = tempQueue.front();
-        tempQueue.pop();
-        printf("%s\n", d.Name);
+        printf("Van con %d dien vien nu trong hang cho:\n", female.Count());
+        female.ShowQueue();
     }
 }
 
 void FormLines(Queue &male, Queue &female) {
-    male.Clear();
-    female.Clear();
-
     int n;
     cout << "Nhap so luong dien vien: ";
     cin >> n;
 
     if (n <= 0) {
-        cerr << "Error: So luong dien vien phai lon hon 0!" << endl;
+        cout << "Error: So luong dien vien phai lon hon 0!" << endl;
         return;
     }
 
@@ -280,7 +273,7 @@ void FormLines(Queue &male, Queue &female) {
         } else if (strcmp(d.Sex, "F") == 0) {
             female.Enqueue(d);
         } else {
-            cerr << "Error: Gioi tinh khong hop le! Vui long nhap lai." << endl;
+            cout << "Error: Gioi tinh khong hop le! Vui long nhap lai." << endl;
             i--; // Retry current input
         }
     }
@@ -290,9 +283,9 @@ int main() {
     Queue males;
     Queue females;
 
-    int choice;
+    int choice = 0;
 
-    do {
+    while (true) {
         cout << "==============================\n";
         cout << "Menu\n";
         cout << "1. Quan ly xep hang mua\n";
@@ -302,45 +295,39 @@ int main() {
         cout << "Nhap lua chon cua ban: ";
         cin >> choice;
 
-        switch (choice) {
-            case 1: {
-                FormLines(males, females);
+        if (choice == 1) {
+            FormLines(males, females);
 
-                cout << "\nDanh sach dien vien nam:\n";
-                ShowQueue(males);
-                cout << "\nDanh sach dien vien nu:\n";
-                ShowQueue(females);
+            cout << "\nDanh sach dien vien nam:\n";
+            males.ShowQueue();
+            cout << "\nDanh sach dien vien nu:\n";
+            females.ShowQueue();
 
-                StartDancing(males, females);
-                break;
+            StartDancing(males, females);
+        } else if (choice == 2) {
+            int n;
+            cout << "Nhap so luong phan tu: ";
+            cin >> n;
+
+            if (n <= 0) {
+                cout << "Error: So luong phan tu phai lon hon 0!" << endl;
+                continue;
             }
-            case 2: {
-                int n;
-                cout << "Nhap so luong phan tu: ";
-                cin >> n;
 
-                if (n <= 0) {
-                    cerr << "Error: So luong phan tu phai lon hon 0!" << endl;
-                    break;
-                }
-
-                int arr[n];
-                cout << "Nhap cac phan tu: ";
-                for (int i = 0; i < n; i++) {
-                    cin >> arr[i];
-                }
-
-                RadixSort(arr, n);
-                break;
+            int arr[n];
+            cout << "Nhap cac phan tu: ";
+            for (int i = 0; i < n; i++) {
+                cin >> arr[i];
             }
-            case 3: {
-                cout << "Thoat chuong trinh. Tam biet!\n";
-                break;
-            }
-            default:
-                cerr << "Error: Lua chon khong hop le. Vui long nhap lai." << endl;
+
+            RadixSort(arr, n);
+        } else if (choice == 3) {
+            cout << "Thoat chuong trinh. Tam biet!\n";
+            break;
+        } else {
+            cout << "Error: Lua chon khong hop le. Vui long nhap lai." << endl;
         }
-    } while (choice != 3);
+    }
 
     return 0;
 }

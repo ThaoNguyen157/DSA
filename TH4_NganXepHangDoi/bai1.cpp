@@ -238,7 +238,7 @@ int main() {
     int choice, num;
     string expr, str;
 
-    do {
+    while (true) {
         cout << "Menu:" << endl;
         cout << "1. Reverse a number using stack" << endl;
         cout << "2. Check if a string is palindrome using stack" << endl;
@@ -248,47 +248,35 @@ int main() {
         cout << "Enter your choice: ";
         cin >> choice;
 
-        switch (choice) {
-            case 1:
-                cout << "Enter a number: ";
-                cin >> num;
-                ReverseNumber(num);
-                break;
-
-            case 2:
-                cout << "Enter a string: ";
-                cin >> str;
-                if (IsPalindrome(str)) {
-                    cout << "The string is a palindrome." << endl;
-                } else {
-                    cout << "The string is not a palindrome." << endl;
-                }
-                break;
-
-            case 3:
-                cout << "Enter a decimal number: ";
-                cin >> num;
-                DecimalToBinary(num);
-                break;
-
-            case 4:
-                cout << "Enter an infix expression (e.g., 3+(2*5)): ";
-                cin >> expr;
-                {
-                    string postfix = InfixToPostfix(expr);
-                    cout << "Postfix expression: " << postfix << endl;
-                    cout << "Result of the postfix expression: " << EvaluatePostfix(postfix) << endl;
-                }
-                break;
-
-            case 0:
-                cout << "Exiting program..." << endl;
-                break;
-
-            default:
-                cout << "Invalid choice!" << endl;
+        if (choice == 1) {
+            cout << "Enter a number: ";
+            cin >> num;
+            ReverseNumber(num);
+        } else if (choice == 2) {
+            cout << "Enter a string: ";
+            cin >> str;
+            if (IsPalindrome(str)) {
+                cout << "The string is a palindrome." << endl;
+            } else {
+                cout << "The string is not a palindrome." << endl;
+            }
+        } else if (choice == 3) {
+            cout << "Enter a decimal number: ";
+            cin >> num;
+            DecimalToBinary(num);
+        } else if (choice == 4) {
+            cout << "Enter an infix expression (e.g., 3+(2*5)): ";
+            cin >> expr;
+            string postfix = InfixToPostfix(expr);
+            cout << "Postfix expression: " << postfix << endl;
+            cout << "Result of the postfix expression: " << EvaluatePostfix(postfix) << endl;
+        } else if (choice == 0) {
+            cout << "Exiting program..." << endl;
+            break;
+        } else {
+            cout << "Invalid choice!" << endl;
         }
-    } while (choice != 0);
+    }
 
     return 0;
 }
